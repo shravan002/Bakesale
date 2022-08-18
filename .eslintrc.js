@@ -35,5 +35,6 @@ module.exports = {
     strict: 'error',
     'symbol-description': 'error',
     yoda: ['error', 'never', {exceptRange: true}],
+    'prefer-const': 'error',
   },
 };
