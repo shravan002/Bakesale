@@ -25,7 +25,6 @@ class Deals extends React.Component {
 const styles = StyleSheet.create({
   list: {
     backgroundColor: '#eee',
-    flex: 1,
     width: '100%',
   },
 });

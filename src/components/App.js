@@ -3,10 +3,12 @@ import {Text, View, StyleSheet} from 'react-native';
 import ajax from '../ajax';
 import DealDetail from './DealDetail';
 import Deals from './Deals';
+import SearchBar from './SearchBar';
 
 class App extends React.Component {
   state = {
     deals: [],
+    dealsFromSearch: [],
     currentDealId: null,
   };
   async componentDidMount() {
@@ -15,6 +17,13 @@ class App extends React.Component {
       return {deals};
     });
   }
+  searchDeals = async searchTerm => {
+    let dealsFromSearch = [];
+    if (searchTerm) {
+      dealsFromSearch = await ajax.fetchDealSearchResults(searchTerm);
+    }
+    this.setState({dealsFromSearch});
+  };
   setCurrentDeal = dealId => {
     this.setState({
       currentDealId: dealId,
@@ -37,9 +46,16 @@ class App extends React.Component {
         />
       );
     }
-    if (this.state.deals.length > 0) {
+    const dealsToDisplay =
+      this.state.dealsFromSearch.length > 0
+        ? this.state.dealsFromSearch
+        : this.state.deals;
+    if (dealsToDisplay.length > 0) {
       return (
-        <Deals deals={this.state.deals} onItemPress={this.setCurrentDeal} />
+        <View>
+          <SearchBar searchDeals={this.searchDeals} />
+          <Deals deals={dealsToDisplay} onItemPress={this.setCurrentDeal} />
+        </View>
       );
     }
     return (
